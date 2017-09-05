@@ -10,8 +10,8 @@ public class SpTools {
     }
 
 
-    public static void getString(Context context, String key, String value) {
+    public static String getString(Context context, String key, String value) {
         SharedPreferences sp = context.getSharedPreferences(MyConstants.SPFILE, Context.MODE_PRIVATE);
-        sp.getString(key, value);
+       return  sp.getString(key, value);
     }
 }
