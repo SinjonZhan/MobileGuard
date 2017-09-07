@@ -1,6 +1,7 @@
 package com.soleil.mobileguard.activities;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -73,21 +74,23 @@ public class HomeActivity extends Activity {
             @Override
             public void onClick(View v) {
                 String passone = ed_passwordone.getText().toString().trim();
-                String finalpass = Md5Utils.Md5(Md5Utils.Md5(passone));
-                System.out.println(passone);
-                System.out.println(finalpass);
+
                 if (TextUtils.isEmpty(passone)) {
                     Toast.makeText(getApplicationContext(), "密码不能为空", Toast.LENGTH_LONG).show();
                     return;
-                } else if (!finalpass.equals(SpTools.getString(getApplicationContext(), MyConstants.PASSWORD, ""))) {
-                    Toast.makeText(getApplicationContext(), "密码错误", Toast.LENGTH_LONG).show();
-                    return;
                 } else {
-                    //保存密码到sp中
-                    Toast.makeText(getApplicationContext(), "登录成功", Toast.LENGTH_LONG).show();
+                    String finalpass = Md5Utils.Md5(Md5Utils.Md5(passone));
+                    if (finalpass.equals(SpTools.getString(getApplicationContext(), MyConstants.PASSWORD, ""))) {
+                        //保存密码到sp中
+                        Toast.makeText(getApplicationContext(), "登录成功", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                        Intent intent = new Intent(HomeActivity.this, LostFindActivity.class);
+                        startActivity(intent);
 
-
-                    dialog.dismiss();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "密码错误", Toast.LENGTH_LONG).show();
+                        return;
+                    }
                 }
             }
 
@@ -134,7 +137,7 @@ public class HomeActivity extends Activity {
                     //保存密码到sp中
                     Toast.makeText(getApplicationContext(), "保存密码成功", Toast.LENGTH_LONG).show();
                     passone = Md5Utils.Md5(Md5Utils.Md5(passone));
-                    SpTools.putString(getApplicationContext(), MyConstants.PASSWORD,passone );
+                    SpTools.putString(getApplicationContext(), MyConstants.PASSWORD, passone);
                     dialog.dismiss();
                 }
             }

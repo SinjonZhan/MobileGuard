@@ -4,4 +4,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <TextView
+        style="@style/tv_title"
+       android:text="手机防盗界面" />
+
 </LinearLayout>
