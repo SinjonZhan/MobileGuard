@@ -18,6 +18,8 @@
         android:textSize="18sp" />
 
     <EditText
+
+        android:id="@+id/et_setup3_safenumber"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
@@ -28,6 +30,7 @@
         android:textColor="#000000"
         android:textSize="20sp" />
     <Button
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"

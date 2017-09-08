@@ -23,6 +23,16 @@ public class SetUp2Activity extends BaseSetupActivity {
         iv_isBind = (ImageView) findViewById(R.id.iv_setup2_isbind);
     }
 
+    @Override
+    public void initData() {
+        if (TextUtils.isEmpty(SpTools.getString(getApplicationContext(), MyConstants.SIM, ""))) {
+            iv_isBind.setImageResource(R.drawable.unlock);
+        }else{
+            iv_isBind.setImageResource(R.drawable.lock);
+        }
+
+    }
+
     public void initEvent() {
         bt_bind.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,10 +61,19 @@ public class SetUp2Activity extends BaseSetupActivity {
         });
     }
 
+    public void next(View v) {
+        if (TextUtils.isEmpty(SpTools.getString(getApplicationContext(), MyConstants.SIM, ""))) {
+            Toast.makeText(getApplicationContext(), "未绑定sim卡", Toast.LENGTH_SHORT).show();
+            return;
+
+        }
+        super.next(v);
+    }
+
     @Override
     protected void nextActivity() {
-        startActivity(SetUp3Activity.class);
 
+        startActivity(SetUp3Activity.class);
     }
 
     @Override

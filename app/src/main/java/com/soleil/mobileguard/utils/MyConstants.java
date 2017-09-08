@@ -5,4 +5,5 @@ public interface MyConstants {
     String PASSWORD = "password";
     String ISSETUP = "issetup"; //是否进入过向导界面
     String SIM = "sim";//sim卡
+    String SAFENUMBER = "safenumber";
 }

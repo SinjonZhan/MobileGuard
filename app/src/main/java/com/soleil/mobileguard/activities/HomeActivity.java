@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.soleil.mobileguard.R;
 import com.soleil.mobileguard.adapter.MyAdapter;
+import com.soleil.mobileguard.engine.ReadContactsEngine;
 import com.soleil.mobileguard.utils.Md5Utils;
 import com.soleil.mobileguard.utils.MyConstants;
 import com.soleil.mobileguard.utils.SpTools;
@@ -31,6 +32,11 @@ public class HomeActivity extends Activity {
         initView();
         initData();
         initEvent(); //初始化事件
+
+        //做测试
+        System.out.println("------------------------------");
+        ReadContactsEngine.readContacts(getApplicationContext());
+        System.out.println("------------------------------");
     }
 
     private void initEvent() {
