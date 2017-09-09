@@ -175,4 +175,6 @@ public class HomeActivity extends Activity {
         setContentView(R.layout.activity_home);
         gv_menus = (GridView) findViewById(R.id.gv_home_menus);
     }
+
+
 }

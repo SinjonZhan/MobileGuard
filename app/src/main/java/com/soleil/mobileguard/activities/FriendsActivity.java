@@ -1,6 +1,6 @@
 package com.soleil.mobileguard.activities;
 
-import android.app.ListActivity;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,7 +23,7 @@ import com.soleil.mobileguard.utils.MyConstants;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FriendsActivity extends ListActivity {
+public class FriendsActivity extends Activity {
 
     private static final int LOADING = 1;
     private static final int FINISH = 2;
@@ -39,6 +39,8 @@ public class FriendsActivity extends ListActivity {
                     pd.setTitle("注意");
                     pd.setMessage("正在玩命加载数据......");
                     pd.show();
+
+
                     break;
                 case FINISH:
                     if (pd != null) {
@@ -59,7 +61,8 @@ public class FriendsActivity extends ListActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        lv_datas = getListView();
+        setContentView(R.layout.activity_listview_contacts);
+        lv_datas = (ListView) findViewById(R.id.lv_contact);
         adapter = new MyAdapter();
         lv_datas.setAdapter(adapter);
 

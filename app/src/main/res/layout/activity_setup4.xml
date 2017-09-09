@@ -12,6 +12,7 @@
 
 
     <CheckBox
+        android:id="@+id/cb_setup4_isprotected"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:checked="true"
@@ -21,6 +22,7 @@
 
 
     <TextView
+        android:id="@+id/tv_isstartlostfind"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="9dp"

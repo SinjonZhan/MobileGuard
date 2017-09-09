@@ -21,8 +21,10 @@ public abstract class BaseSetupActivity extends Activity {
         super.onCreate(savedInstanceState);
         initView();
         initGesture();
-        initEvent();//初始化事件
         initData();//初始化数据
+        initEvent();//初始化事件
+
+
     }
 
     public void initData() {
