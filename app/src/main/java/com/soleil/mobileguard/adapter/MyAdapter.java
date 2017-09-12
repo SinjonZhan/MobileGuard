@@ -1,6 +1,7 @@
 package com.soleil.mobileguard.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -8,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.soleil.mobileguard.R;
+import com.soleil.mobileguard.utils.MyConstants;
+import com.soleil.mobileguard.utils.SpTools;
 
 
 public class MyAdapter extends BaseAdapter {
@@ -48,8 +51,14 @@ public class MyAdapter extends BaseAdapter {
         ImageView iv_icon = (ImageView) view.findViewById(R.id.iv_item_home_gv_icon);
         TextView tv_name = (TextView) view.findViewById(R.id.tv_item_home_gv_name);
 
+
         iv_icon.setImageResource(icons[position]);
         tv_name.setText(names[position]);
+        if(position==0) {
+            if (!TextUtils.isEmpty(SpTools.getString(context, MyConstants.TITLE, "手机防盗"))) {
+                tv_name.setText(SpTools.getString(context, MyConstants.TITLE, "手机防盗"));
+            }
+        }
         return view;
     }
 }

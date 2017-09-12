@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.soleil.mobileguard.R;
@@ -24,6 +25,7 @@ public class HomeActivity extends Activity {
 
     private GridView gv_menus;//主界面的按钮
     private AlertDialog dialog;
+    private MyAdapter adapter;
 
 
     @Override
@@ -66,6 +68,9 @@ public class HomeActivity extends Activity {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         View view = View.inflate(getApplicationContext(), R.layout.gv_enter_password_dialog, null);
         builder.setView(view);
+
+        TextView tv_dialog_title = (TextView)view. findViewById(R.id.tv_dialog_title);
+        tv_dialog_title.setText("防盗登录");
 
         final EditText ed_passwordone = (EditText) view.findViewById(R.id.et_dialog_set_password_one);
         final EditText ed_passwordtwo = (EditText) view.findViewById(R.id.et_dialog_set_password_two);
@@ -146,7 +151,9 @@ public class HomeActivity extends Activity {
                     SpTools.putString(getApplicationContext(), MyConstants.PASSWORD, passone);
                     dialog.dismiss();
                 }
+
             }
+
 
         });
         bt_cancel.setOnClickListener(new View.OnClickListener() {
@@ -163,7 +170,8 @@ public class HomeActivity extends Activity {
     }
 
     private void initData() {
-        gv_menus.setAdapter(new MyAdapter(getApplicationContext()));
+        adapter = new MyAdapter(getApplicationContext());
+        gv_menus.setAdapter(adapter);
 //        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.btn_green_normal);
 //        ImageView iv = new ImageView(this);
 //        iv.setImageBitmap(bitmap);
@@ -177,4 +185,9 @@ public class HomeActivity extends Activity {
     }
 
 
+    @Override
+    protected void onResume() {
+        adapter.notifyDataSetChanged();
+        super.onResume();
+    }
 }

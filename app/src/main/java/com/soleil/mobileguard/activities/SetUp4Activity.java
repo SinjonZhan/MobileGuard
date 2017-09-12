@@ -38,6 +38,7 @@ public class SetUp4Activity extends BaseSetupActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
+                    SpTools.putBoolean(getApplicationContext(),MyConstants.LOSTFIND,true);
                     tv_isStartProtected.setText("防盗保护已经开启");
                     if(!ServiceUtils.isServiceRunning(getApplicationContext(), "com.soleil.mobileguard.service.LostFindService")){
                     System.out.println("---------------check ture---------------");

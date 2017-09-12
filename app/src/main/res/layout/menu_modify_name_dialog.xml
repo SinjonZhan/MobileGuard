@@ -5,30 +5,21 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/tv_dialog_title"
+        android:id="@+id/tv_mn_dialog_title"
         style="@style/tv_title"
-        android:text="设置密码"
+        android:text="设置防盗名"
         android:textColor="#000000" />
 
     <EditText
-        android:id="@+id/et_dialog_set_password_one"
+        android:id="@+id/et_mn_dialog_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="输入密码"
+        android:hint="输入防盗名"
 
-        android:inputType="textPassword"
+
         android:textColor="#000000" />
 
-    <EditText
-        android:id="@+id/et_dialog_set_password_two"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="再次输入密码确认"
 
-
-
-        android:inputType="textPassword"
-        android:textColor="#000000" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -37,17 +28,17 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/et_dialog_set_password"
+            android:id="@+id/et_mn_dialog_set_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="设置密码"
+            android:text="设置"
             android:textColor="#000000"
 
             android:textSize="18sp" />
 
         <Button
-            android:id="@+id/et_dialog_cancel"
+            android:id="@+id/et_mn_dialog_cancel"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

@@ -1,128 +1,152 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <TextView
-        style="@style/tv_title"
-        android:text="手机防盗界面" />
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="5dp"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/tv_activity_lostfind_title"
+            style="@style/tv_title"
+            android:text="手机防盗界面" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="安全号码："
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="安全号码："
+                android:textColor="#000000"
+                android:textSize="25sp" />
+
+            <TextView
+                android:id="@+id/tv_lostfind_getsafename"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#ff0000"
+                android:textSize="25sp" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_islostfind"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="防盗保护是否开启："
+                android:textColor="#000000"
+                android:textSize="25sp" />
+
+            <ImageView
+                android:id="@+id/iv_islostfind"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/tv_islostfind"
+
+                android:layout_alignParentRight="true"
+                android:paddingRight="10dp"
+                android:textColor="#000000" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_enter_guideinterface"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/tv_clickstyle"
+            android:clickable="true"
+            android:text="重新进入设置向导界面"
             android:textColor="#000000"
             android:textSize="25sp" />
 
         <TextView
-            android:id="@+id/tv_lostfind_getsafename"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="#ff0000"
+            android:drawableLeft="@android:drawable/btn_star_big_on"
+            android:gravity="center_vertical"
+            android:text="SIM卡变更报警"
+            android:textColor="#000000"
+
             android:textSize="25sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+
+            android:layout_height="wrap_content"
+            android:drawableLeft="@android:drawable/btn_star_big_on"
+            android:gravity="center_vertical"
+            android:text="GPS追踪:"
+            android:textColor="#000000"
+
+            android:textSize="25sp"
+
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+
+            android:layout_height="wrap_content"
+            android:drawableLeft="@android:drawable/btn_star_big_on"
+            android:gravity="center_vertical"
+            android:text="远程锁屏"
+            android:textColor="#000000"
+
+            android:textSize="25sp"
+
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+
+            android:layout_height="wrap_content"
+            android:drawableLeft="@android:drawable/btn_star_big_on"
+            android:gravity="center_vertical"
+            android:text="远程清除数据"
+
+            android:textColor="#000000"
+            android:textSize="25sp" />
+
+
     </LinearLayout>
 
-    <RelativeLayout
+    <LinearLayout
+        android:id="@+id/ll_lostfind_menu_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="5dp"
-        android:orientation="horizontal">
+        android:layout_alignParentBottom="true"
+        android:visibility="gone">
 
-        <TextView
-            android:id="@+id/tv_islostfind"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="防盗保护是否开启："
-            android:textColor="#000000"
-            android:textSize="25sp" />
+        <Button
 
-        <ImageView
-            android:id="@+id/iv_islostfind"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/tv_islostfind"
-
-            android:layout_alignParentRight="true"
-            android:paddingRight="10dp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/btn_green_normal"
+            android:onClick="pressMunu"
+            android:text="修改防盗名"
             android:textColor="#000000" />
-    </RelativeLayout>
 
-    <TextView
-        android:id="@+id/tv_enter_guideinterface"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="5dp"
-        android:background="@drawable/tv_clickstyle"
-        android:clickable="true"
-        android:text="重新进入设置向导界面"
-        android:textColor="#000000"
-        android:textSize="25sp" />
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/btn_green_normal"
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:drawableLeft="@android:drawable/btn_star_big_on"
-        android:gravity="center_vertical"
-        android:text="SIM卡变更报警"
-        android:textColor="#000000"
-
-        android:textSize="25sp" />
-
-    <TextView
-        android:layout_width="match_parent"
-
-        android:layout_height="wrap_content"
-        android:drawableLeft="@android:drawable/btn_star_big_on"
-        android:gravity="center_vertical"
-        android:text="GPS追踪:"
-        android:textColor="#000000"
-
-        android:textSize="25sp"
-
-        />
-
-    <TextView
-        android:layout_width="match_parent"
-
-        android:layout_height="wrap_content"
-        android:drawableLeft="@android:drawable/btn_star_big_on"
-        android:gravity="center_vertical"
-        android:text="远程锁屏"
-        android:textColor="#000000"
-
-        android:textSize="25sp"
-
-        />
-
-    <TextView
-        android:layout_width="match_parent"
-
-        android:layout_height="wrap_content"
-        android:drawableLeft="@android:drawable/btn_star_big_on"
-        android:gravity="center_vertical"
-        android:text="远程清除数据"
-
-        android:textColor="#000000"
-        android:textSize="25sp" />
-    <TextView
-        android:layout_width="match_parent"
-
-        android:layout_height="wrap_content"
-        android:drawableLeft="@android:drawable/btn_star_big_on"
-        android:gravity="center_vertical"
-        android:text="音乐报警"
-
-        android:textColor="#000000"
-        android:textSize="25sp" />
-
-</LinearLayout>
+            android:text="修改xx"
+            android:textColor="#000000" />
+    </LinearLayout>
+</RelativeLayout>
