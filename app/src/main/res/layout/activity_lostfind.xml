@@ -8,10 +8,26 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_activity_lostfind_title"
-            style="@style/tv_title"
-            android:text="手机防盗界面" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/tv_activity_lostfind_title"
+                style="@style/tv_title"
+                android:text="手机防盗界面" />
+
+            <Button
+
+                android:id="@+id/bt_popup_window"
+                android:layout_width="60sp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="50dp"
+                android:text="菜单"
+                android:textColor="#000000" />
+        </RelativeLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -123,30 +139,5 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/ll_lostfind_menu_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:visibility="gone">
 
-        <Button
-
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/btn_green_normal"
-            android:onClick="pressMunu"
-            android:text="修改防盗名"
-            android:textColor="#000000" />
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/btn_green_normal"
-
-            android:text="修改xx"
-            android:textColor="#000000" />
-    </LinearLayout>
 </RelativeLayout>

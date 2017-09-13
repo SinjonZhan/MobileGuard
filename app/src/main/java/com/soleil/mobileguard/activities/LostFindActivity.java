@@ -2,16 +2,21 @@ package com.soleil.mobileguard.activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.ScaleAnimation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +25,8 @@ import com.soleil.mobileguard.utils.EncryptTools;
 import com.soleil.mobileguard.utils.MyConstants;
 import com.soleil.mobileguard.utils.SpTools;
 
+import static android.view.animation.Animation.RELATIVE_TO_SELF;
+
 
 public class LostFindActivity extends Activity {
 
@@ -27,8 +34,14 @@ public class LostFindActivity extends Activity {
     private TextView tv_safeName;
     private ImageView iv_lostFind;
     private TextView tv_enterGuideInterface;
-    private LinearLayout ll;
-    private boolean isPressMenu =false;
+
+
+    private PopupWindow pw;
+    private View view;
+    private ScaleAnimation sa;
+    private Button bt_change_lostFind_name;
+    private View bt_popupWindow;
+    private Button bt_popup_window;
 
 
     @Override
@@ -39,6 +52,7 @@ public class LostFindActivity extends Activity {
             initView();
             initData();
             initEvent();
+            initPopupWindow();
 
         } else {
             //设置向导界面
@@ -47,6 +61,24 @@ public class LostFindActivity extends Activity {
             finish();//注意关闭界面
         }
 
+    }
+
+    private void initPopupWindow() {
+        view = View.inflate(getApplicationContext(), R.layout.popup_lostfind_menu, null);
+
+        bt_change_lostFind_name = (Button) view.findViewById(R.id.bt_change_lostfind_name);
+        bt_change_lostFind_name.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showModifyLostFindNameDialog();
+            }
+        });
+
+
+        pw = new PopupWindow(view, -2, -2);
+
+        sa = new ScaleAnimation(1.0f, 1.0f, 0f, 1.0f, RELATIVE_TO_SELF, 0.5f, RELATIVE_TO_SELF, 0f);
+        sa.setDuration(1000);
     }
 
     private void initEvent() {
@@ -58,12 +90,18 @@ public class LostFindActivity extends Activity {
                 finish();
             }
         });
+        bt_popup_window.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow();
+            }
+        });
+//        bt_popup_window.setFocusable(true);
+
     }
 
     private void initData() {
         //显示安全码
-
-
         tv_safeName.setText(EncryptTools.decrypt(SpTools.getString(getApplicationContext(), MyConstants.SAFENUMBER, ""), MyConstants.MUSIC));
 
         //判断防盗是否开启
@@ -73,6 +111,44 @@ public class LostFindActivity extends Activity {
             iv_lostFind.setImageResource(R.drawable.unlock);
         }
 
+
+    }
+
+    //点击按钮弹出窗体
+    public void popupWindow() {
+
+
+        if (pw != null && pw.isShowing()) {
+            pw.dismiss();
+        } else {
+
+
+            int[] location = new int[2];
+            bt_popup_window.getLocationInWindow(location);
+            pw.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            view.startAnimation(sa);
+
+            pw.showAtLocation(bt_popup_window, Gravity.LEFT | Gravity.TOP, location[0], location[1] + bt_popup_window.getHeight());
+        }
+
+
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (pw != null && pw.isShowing()) {
+            pw.dismiss();
+
+        }
+        return super.onTouchEvent(event);
+    }
+    @Override
+    protected void onDestroy() {
+        if (pw != null && pw.isShowing()) {
+            pw.dismiss();
+            pw = null;
+        }
+        super.onDestroy();
     }
 
     private void initView() {
@@ -80,21 +156,16 @@ public class LostFindActivity extends Activity {
         tv_safeName = (TextView) findViewById(R.id.tv_lostfind_getsafename);
         iv_lostFind = (ImageView) findViewById(R.id.iv_islostfind);
         tv_enterGuideInterface = (TextView) findViewById(R.id.tv_enter_guideinterface);
-        ll = (LinearLayout) findViewById(R.id.ll_lostfind_menu_button);
+        bt_popup_window = (Button) findViewById(R.id.bt_popup_window);
 
     }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_MENU) {
-            if (!isPressMenu) {
-                ll.setVisibility(View.VISIBLE);
 
-            }else {
-                ll.setVisibility(View.GONE);
+            popupWindow();
 
-            }
-            isPressMenu = !isPressMenu;
 
         }
         return super.onKeyDown(keyCode, event);
@@ -107,9 +178,6 @@ public class LostFindActivity extends Activity {
 //        return super.onCreateOptionsMenu(menu);
 //    }
 
-    public void pressMunu(View view) {
-        showModifyLostFindNameDialog();
-    }
 
 //    @Override
 //    public boolean onMenuItemSelected(int featureId, MenuItem item) {
@@ -130,6 +198,7 @@ public class LostFindActivity extends Activity {
 //    }
 
     private void showModifyLostFindNameDialog() {
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         View view = View.inflate(getApplicationContext(), R.layout.menu_modify_name_dialog, null);
         builder.setView(view);
