@@ -54,11 +54,22 @@ public class HomeActivity extends Activity {
                             showEnterPassDialog();
                         }
                         break;
+
+                    case 8:
+                        //设置中心
+                        showSettingCenterInterface();
+                        break;
                     default:
                         break;
                 }
             }
         });
+    }
+
+    private void showSettingCenterInterface() {
+        Intent intent = new Intent(this, SettingCenterActivity.class);
+        startActivity(intent);
+
     }
 
     /**
