@@ -47,16 +47,26 @@ public class SettingCenterView extends LinearLayout {
 
     }
 
+    public void setItemClickListener(OnClickListener listener) {
+        item.setOnClickListener(listener);
+
+
+    }
+
+    public boolean isChecked() {
+        return cb_auto_update.isChecked();
+    }
+
+    public void setChecked(boolean isChecked) {
+        cb_auto_update.setChecked(isChecked);
+    }
+
     private void initEvent() {
         item.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (cb_auto_update.isChecked()) {
-                    cb_auto_update.setChecked(false);
-                }else{
-                    cb_auto_update.setChecked(true);
-
-                }
+                cb_auto_update.setChecked(!cb_auto_update.isChecked());
+                
             }
         });
 

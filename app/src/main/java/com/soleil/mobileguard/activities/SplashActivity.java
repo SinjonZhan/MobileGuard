@@ -28,6 +28,8 @@ import com.lidroid.xutils.http.callback.RequestCallBack;
 import com.soleil.mobileguard.BuildConfig;
 import com.soleil.mobileguard.R;
 import com.soleil.mobileguard.domain.UrlBean;
+import com.soleil.mobileguard.utils.MyConstants;
+import com.soleil.mobileguard.utils.SpTools;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -115,7 +117,21 @@ public class SplashActivity extends Activity {
         initAnimation();
         //检查版本更新
 
-        checkVersion();
+        if (SpTools.getBoolean(getApplicationContext(), MyConstants.AUTOUPDATE, false)) {
+            checkVersion();
+        }
+        else {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    SystemClock.sleep(3000);
+                    handler.obtainMessage(LOADMAIN).sendToTarget();
+
+                }
+            }).start();
+
+        }
+
     }
 
     private void initData() {

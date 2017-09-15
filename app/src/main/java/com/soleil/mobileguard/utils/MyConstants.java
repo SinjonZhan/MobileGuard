@@ -9,4 +9,5 @@ public interface MyConstants {
     int MUSIC = 120;
     String LOSTFIND = "lostfind";
     String TITLE = "title";
+    String AUTOUPDATE = "autoupdate";
 }
