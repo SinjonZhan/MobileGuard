@@ -55,10 +55,21 @@ public class HomeActivity extends Activity {
                         }
                         break;
 
+                    case 1:
+                        //通讯卫士
+                    {
+                        Intent intent = new Intent(HomeActivity.this, TelSmsSafeActivity.class);
+                        startActivity(intent);
+                        break;
+                    }
                     case 8:
                         //设置中心
-                        showSettingCenterInterface();
+                    {
+
+                        Intent intent = new Intent(HomeActivity.this, SettingCenterActivity.class);
+                        startActivity(intent);
                         break;
+                    }
                     default:
                         break;
                 }
@@ -66,11 +77,6 @@ public class HomeActivity extends Activity {
         });
     }
 
-    private void showSettingCenterInterface() {
-        Intent intent = new Intent(this, SettingCenterActivity.class);
-        startActivity(intent);
-
-    }
 
     /**
      * 登录密码对话框
@@ -80,7 +86,7 @@ public class HomeActivity extends Activity {
         View view = View.inflate(getApplicationContext(), R.layout.gv_enter_password_dialog, null);
         builder.setView(view);
 
-        TextView tv_dialog_title = (TextView)view. findViewById(R.id.tv_dialog_title);
+        TextView tv_dialog_title = (TextView) view.findViewById(R.id.tv_dialog_title);
         tv_dialog_title.setText("防盗登录");
 
         final EditText ed_passwordone = (EditText) view.findViewById(R.id.et_dialog_set_password_one);

@@ -45,6 +45,7 @@
         <activity android:name=".activities.SetUp4Activity" />
         <activity android:name=".activities.FriendsActivity" />
         <activity android:name=".activities.SettingCenterActivity" />
+        <activity android:name=".activities.TelSmsSafeActivity" />
 
         <service android:name=".service.LostFindService" />
         <service android:name=".service.LocationService" />

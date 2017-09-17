@@ -68,7 +68,6 @@ public class SplashActivity extends Activity {
     private ProgressBar pb_download;
     private HttpURLConnection conn;
     private BufferedReader reader;
-    ;
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -117,19 +116,12 @@ public class SplashActivity extends Activity {
         initAnimation();
         //检查版本更新
 
+
+    }
+
+    private void timeConsuming() {
         if (SpTools.getBoolean(getApplicationContext(), MyConstants.AUTOUPDATE, false)) {
             checkVersion();
-        }
-        else {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    SystemClock.sleep(3000);
-                    handler.obtainMessage(LOADMAIN).sendToTarget();
-
-                }
-            }).start();
-
         }
 
     }
@@ -359,8 +351,29 @@ public class SplashActivity extends Activity {
         as.addAnimation(ra);
         as.setDuration(3000);
         as.setFillAfter(true);
+        as.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                timeConsuming();
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                if (!SpTools.getBoolean(getApplicationContext(), MyConstants.AUTOUPDATE, false)) {
+                    loadMain();
+
+                }
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
         rl_root.startAnimation(as);
     }
+
 
     /**
      * 界面的初始化
