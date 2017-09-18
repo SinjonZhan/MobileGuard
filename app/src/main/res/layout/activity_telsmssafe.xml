@@ -20,13 +20,14 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
+            android:layout_marginRight="30dp"
             android:text="添加" />
     </RelativeLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_weight="1">
 
         //ListVIew
 
@@ -34,6 +35,8 @@
             android:id="@+id/lv_telsms_safenumber"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:fastScrollEnabled="true"
+            android:scrollbars="none"
             android:visibility="gone">
 
         </ListView>
@@ -62,5 +65,7 @@
             android:visibility="gone" />
 
     </FrameLayout>
+
+
 
 </LinearLayout>

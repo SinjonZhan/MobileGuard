@@ -5,13 +5,13 @@ import com.soleil.mobileguard.engine.ReadContactsEngine;
 
 import java.util.List;
 
-public class FriendsActivity extends BaseFriendsCallSmsActivity {
+public class ReadTelFriendsActivity extends BaseFriendsCallSmsActivity {
 
 
     @Override
     public List<Contact> getDatas() {
 
-        return ReadContactsEngine.readContacts(getApplicationContext());
+        return ReadContactsEngine.readCallLog(getApplicationContext());
     }
 
 }

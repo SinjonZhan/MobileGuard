@@ -15,6 +15,7 @@
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.READ_CALL_LOG" />
 
 
 
@@ -46,6 +47,10 @@
         <activity android:name=".activities.FriendsActivity" />
         <activity android:name=".activities.SettingCenterActivity" />
         <activity android:name=".activities.TelSmsSafeActivity" />
+        <activity android:name=".activities.TelSmsSafeActivityPage" />
+        <activity android:name=".activities.BaseFriendsCallSmsActivity" />
+        <activity android:name=".activities.ReadSmsFriendsActivity" />
+        <activity android:name=".activities.ReadTelFriendsActivity" />
 
         <service android:name=".service.LostFindService" />
         <service android:name=".service.LocationService" />
