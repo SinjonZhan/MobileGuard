@@ -205,7 +205,7 @@ public class TelSmsSafeActivity extends Activity {
                         startActivityForResult(intent, 1);
 
                     }
-                        break;
+                    break;
                     case R.id.bt_addblackuser_bylog:
                         //点击通过通讯记录联系人触发动作
                     {
@@ -214,7 +214,7 @@ public class TelSmsSafeActivity extends Activity {
                         startActivityForResult(intent, 1);
 
                     }
-                        break;
+                    break;
                     case R.id.bt_addblackuser_bysms:
                         //点击通过记录联系人触发动作
                     {
@@ -223,7 +223,7 @@ public class TelSmsSafeActivity extends Activity {
                         startActivityForResult(intent, 1);
 
                     }
-                        break;
+                    break;
 
                 }
             }
@@ -468,7 +468,13 @@ public class TelSmsSafeActivity extends Activity {
 
                             datas.remove(position);
 
+                            if (datas.size() < 10||position == datas.size()) {
+                                initData();
+
+                            }else{
+
                             adapter.notifyDataSetChanged();
+                            }
 
                             Log.d("TelSmsSafeActivity", datas.size() + "");
 

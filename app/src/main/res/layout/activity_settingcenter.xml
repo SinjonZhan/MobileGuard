@@ -21,6 +21,7 @@
 
 
     <com.soleil.mobileguard.view.SettingCenterView
+        android:id="@+id/scv_setting_center_intercept_black"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         sinjon:content="黑名单拦截设置已经关闭-黑名单拦截设置已经打开"

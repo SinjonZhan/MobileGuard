@@ -49,6 +49,53 @@
 
         android:layout_marginTop="5dp"
         android:background="@drawable/list_devider" />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone" >
 
+        <Button
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="nextPage"
+            android:text="n" />
+
+        <Button
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="prevPage"
+            android:text="p" />
+
+        <Button
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="endPage"
+            android:text="e" />
+
+        <Button
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="jumpPage"
+            android:text="j" />
+
+        <EditText
+            android:id="@+id/et_telsms_gotopage"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="1" />
+
+        <TextView
+            android:id="@+id/tv_telsms_totalpage"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="2/10" />
+    </LinearLayout>
 
 </RelativeLayout>

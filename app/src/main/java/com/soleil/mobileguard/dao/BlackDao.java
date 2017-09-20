@@ -18,14 +18,43 @@ import java.util.List;
 public class BlackDao {
     private BlackListDb blackDb;
 
+
     public BlackDao(Context context) {
         this.blackDb = new BlackListDb(context);
+
+
+    }
+
+    /**
+     * @param phone 发送人号码
+     * @return 1、短信 2、电话 3、全部 4、不拦截
+     */
+    public int getMode(String phone) {
+        SQLiteDatabase db = blackDb.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select " + BlackTable.MODE + " from " + BlackTable.BLACKTABLE + " where " + BlackTable.PHONE + "=?", new String[]{phone}, null);
+        int mode = 0;
+
+
+        if (cursor.moveToNext()) {
+            mode = cursor.getInt(0);
+            System.out.println("****************"+mode+"---------------");
+        } else {
+            mode = 0;
+        }
+
+
+        System.out.println("---------------"+mode+"---------------");
+
+
+        cursor.close();
+        db.close();
+        return mode;
     }
 
     public int getTotalRows() {
         SQLiteDatabase db = blackDb.getReadableDatabase();
         Cursor cursor = db.rawQuery("select count(1) from " + BlackTable.BLACKTABLE, null);
-         cursor.moveToNext();
+        cursor.moveToNext();
 
 
         int totalRows = cursor.getInt(0);
@@ -36,18 +65,14 @@ public class BlackDao {
     }
 
     /**
-     * @param datasNumber
-     *      分批加载的数据条目
-     * @param startIndex
-     *      取数据的其实位置
-     * @return
-     *      返回分批加载的数据
-     *
+     * @param datasNumber 分批加载的数据条目
+     * @param startIndex  取数据的其实位置
+     * @return 返回分批加载的数据
      */
-    public List<BlackBean> getMoreDatas(int datasNumber , int startIndex){
+    public List<BlackBean> getMoreDatas(int datasNumber, int startIndex) {
         List<BlackBean> datas = new ArrayList<>();
         SQLiteDatabase database = blackDb.getReadableDatabase();
-        Cursor cursor = database.rawQuery("select " + BlackTable.PHONE + "," + BlackTable.MODE + " from " + BlackTable.BLACKTABLE+" order by _id desc "+" limit ?,?", new String[]{startIndex+"",datasNumber+""});
+        Cursor cursor = database.rawQuery("select " + BlackTable.PHONE + "," + BlackTable.MODE + " from " + BlackTable.BLACKTABLE + " order by _id desc " + " limit ?,?", new String[]{startIndex + "", datasNumber + ""});
         while (cursor.moveToNext()) {
             BlackBean bb = new BlackBean();
             bb.setPhone(cursor.getString(0));
@@ -70,7 +95,7 @@ public class BlackDao {
     public List<BlackBean> getPageDatas(int currentPage, int perPage) {
         List<BlackBean> datas = new ArrayList<>();
         SQLiteDatabase database = blackDb.getReadableDatabase();
-        Cursor cursor = database.rawQuery("select " + BlackTable.PHONE + "," + BlackTable.MODE + " from " + BlackTable.BLACKTABLE+" limit ?,?", new String[]{((currentPage-1)*perPage)+"",perPage+""});
+        Cursor cursor = database.rawQuery("select " + BlackTable.PHONE + "," + BlackTable.MODE + " from " + BlackTable.BLACKTABLE + " limit ?,?", new String[]{((currentPage - 1) * perPage) + "", perPage + ""});
         while (cursor.moveToNext()) {
             BlackBean bb = new BlackBean();
             bb.setPhone(cursor.getString(0));
