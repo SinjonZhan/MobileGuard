@@ -29,4 +29,67 @@
 
     </com.soleil.mobileguard.view.SettingCenterView>
 
+    <com.soleil.mobileguard.view.SettingCenterView
+        android:id="@+id/scv_setting_center_phonelocationservice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        sinjon:content="来电归属地设置已经关闭-来电归属地设置已经打开"
+        sinjon:title="来电归属地设置">
+
+    </com.soleil.mobileguard.view.SettingCenterView>
+
+
+    <RelativeLayout
+        android:id="@+id/rl_setting_center_locationstyle_select"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/tv_clickstyle"
+        android:clickable="true"
+        android:padding="0dp">
+
+        <TextView
+            android:id="@+id/tv_setting_center_locationstyle_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:text="归属地显示风格"
+            android:textColor="#000000"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/tv_setting_center_locationstyle_content"
+            android:layout_width="wrap_content"
+
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_setting_center_locationstyle_title"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:text="苹果绿"
+            android:textColor="#ff0000"
+            android:textSize="18sp" />
+
+        <!--android:layout_toRightOf="@id/tv_setting_center_auto_update"-->
+        <ImageView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/iv_jiantou_selector"
+
+            android:clickable="false" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:layout_below="@id/tv_setting_center_locationstyle_content"
+
+            android:layout_marginTop="5dp"
+            android:background="@drawable/list_devider" />
+
+
+    </RelativeLayout>
+
 </LinearLayout>

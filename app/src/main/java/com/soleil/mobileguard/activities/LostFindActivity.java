@@ -1,12 +1,11 @@
 package com.soleil.mobileguard.activities;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -45,7 +44,7 @@ public class LostFindActivity extends Activity {
 
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (SpTools.getBoolean(getApplicationContext(), MyConstants.ISSETUP, false)) {
             //进入过向导界面
@@ -53,6 +52,7 @@ public class LostFindActivity extends Activity {
             initData();
             initEvent();
             initPopupWindow();
+
 
         } else {
             //设置向导界面
@@ -142,6 +142,7 @@ public class LostFindActivity extends Activity {
         }
         return super.onTouchEvent(event);
     }
+
     @Override
     protected void onDestroy() {
         if (pw != null && pw.isShowing()) {

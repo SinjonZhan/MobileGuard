@@ -1,41 +1,50 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.3"
+    compileSdkVersion 22
+    buildToolsVersion '25.0.3'
     defaultConfig {
         applicationId "com.soleil.mobileguard"
-        minSdkVersion 18
-        targetSdkVersion 25
+        minSdkVersion 9
+        targetSdkVersion 22
         versionCode 1
         versionName "番茄版"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
     }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
         }
     }
 }
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-
-
-    compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
-
-    compile files('C:/soleil/data/androidcode/MobileGuard/lib/xUtils-2.6.14.jar')
-
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     androidTestCompile 'com.android.support:support-annotations:25.3.1'
-    androidTestCompile ('com.android.support.test:runner:0.5')
+    androidTestCompile 'com.android.support.test:runner:0.5'
     androidTestCompile 'com.android.support.test:rules:0.5'
-    androidTestCompile ('com.android.support.test.espresso:espresso-core:2.2.2')
-
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
+    compile files('libs/MobCommons-2017.0914.1125.jar')
+    compile files('libs/MobTools-2017.0914.1125.jar')
+    compile files('libs/ShareSDK-Core-3.1.0.jar')
+    compile files('libs/ShareSDK-Email-3.1.0.jar')
+    compile files('libs/ShareSDK-Facebook-3.1.0.jar')
+    compile files('libs/ShareSDK-QQ-3.1.0.jar')
+    compile files('libs/ShareSDK-QZone-3.1.0.jar')
+    compile files('libs/ShareSDK-ShortMessage-3.1.0.jar')
+    compile files('libs/ShareSDK-SinaWeibo-3.1.0.jar')
+    compile files('libs/ShareSDK-TencentWeibo-3.1.0.jar')
+    compile files('libs/ShareSDK-Twitter-3.1.0.jar')
+    compile files('libs/ShareSDK-Wechat-3.1.0.jar')
+    compile files('libs/ShareSDK-Wechat-Core-3.1.0.jar')
+    compile files('libs/ShareSDK-Wechat-Favorite-3.1.0.jar')
+    compile files('libs/ShareSDK-Wechat-Moments-3.1.0.jar')
 }

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -90,7 +89,7 @@ public class TelSmsSafeActivityPage extends Activity {
     };
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initView();
         initData();
@@ -170,7 +169,7 @@ public class TelSmsSafeActivityPage extends Activity {
         if (currentPage >= 1 && currentPage <= totalPage) {
 
             initData();
-        }else{
+        } else {
             Toast.makeText(getApplicationContext(), "请按套路出牌", Toast.LENGTH_SHORT).show();
         }
 

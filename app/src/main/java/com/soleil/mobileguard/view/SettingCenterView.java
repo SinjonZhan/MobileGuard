@@ -2,7 +2,6 @@ package com.soleil.mobileguard.view;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.CheckBox;
@@ -27,7 +26,7 @@ public class SettingCenterView extends LinearLayout {
         initView();
     }
 
-    public SettingCenterView(Context context, @Nullable AttributeSet attrs) {
+    public SettingCenterView(Context context, AttributeSet attrs) {
         super(context, attrs);
         initView();
         initEvent();
@@ -40,7 +39,7 @@ public class SettingCenterView extends LinearLayout {
 
     }
 
-    public SettingCenterView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public SettingCenterView(Context context,  AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initView();
 
@@ -66,7 +65,7 @@ public class SettingCenterView extends LinearLayout {
             @Override
             public void onClick(View v) {
                 cb_auto_update.setChecked(!cb_auto_update.isChecked());
-                
+
             }
         });
 

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/iv_drawable"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="15dp"
+
+        android:layout_marginTop="5dp"
+        android:src="@mipmap/ic_launcher" />
+
+
+    <TextView
+        android:id="@+id/tv_packagename"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:layout_toRightOf="@id/iv_drawable"
+        android:text="package Name"
+        android:textColor="#aa000000"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/tv_issd"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_packagename"
+
+
+        android:layout_marginTop="1dp"
+        android:layout_toRightOf="@id/iv_drawable"
+        android:text="存储"
+        android:textColor="#aa000000"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/tv_volume"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+
+
+        android:layout_centerVertical="true"
+        android:layout_marginRight="5dp"
+        android:text="200kb"
+
+        android:textColor="#aa000000"
+        android:textSize="17sp" />
+
+
+    <View
+
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#44000000" />
+
+</RelativeLayout>

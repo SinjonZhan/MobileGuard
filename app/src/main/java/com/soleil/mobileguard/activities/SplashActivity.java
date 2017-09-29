@@ -1,14 +1,15 @@
 package com.soleil.mobileguard.activities;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.AssetManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
@@ -36,6 +37,7 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -116,7 +118,64 @@ public class SplashActivity extends Activity {
         initAnimation();
         //检查版本更新
 
+        //拷贝数据库
+        copyDB("address.db");
 
+    }
+
+    /**
+     * 把assets目录下的文件拷贝到本地
+     *
+     * @param dbName assets目录下的文件名
+     */
+    private void copyDB(final String dbName) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                //判断内存是否存在该数据库
+                File file = new File("/data/data/com.soleil.mobileguard/files/" + dbName);
+                if (file.exists()) {
+                    return;
+                }
+                try {
+
+                    fileCopy(dbName);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+
+        }).start();
+
+
+    }
+
+    private void fileCopy(String dbName) throws IOException {
+        //io流拷贝
+        AssetManager assets = getAssets();
+
+        InputStream is = assets.open(dbName);
+
+//        InputStream is = getApplicationContext().getResources().openRawResource(R.raw.add);
+
+        FileOutputStream fos = openFileOutput(dbName, MODE_PRIVATE);
+
+
+        //流的拷贝
+        byte[] buffer = new byte[8];  //定义缓冲区的大小为1k
+        int len;
+
+        //读到结尾返回-1
+        while ((len = is.read(buffer)) != -1) {
+            //写数据
+            fos.write(buffer, 0, len);
+
+        }
+        fos.flush();
+        is.close();
+        fos.close();
     }
 
     private void timeConsuming() {

@@ -2,7 +2,7 @@ package com.soleil.mobileguard;
 
 import android.test.AndroidTestCase;
 
-import com.soleil.mobileguard.dao.BlackDao;
+import com.soleil.mobileguard.engine.PhoneLocationEngine;
 
 import org.junit.Test;
 
@@ -10,8 +10,8 @@ import org.junit.Test;
 public class BlackDaoTest extends AndroidTestCase{
     @Test
     public void testAdd() throws Exception {
-        BlackDao bd = new BlackDao(getContext());
-
+        System.out.println("-----------"+ PhoneLocationEngine.mobileQuery("15626257844", getContext()));
+//        BlackDao bd = new BlackDao(getContext());
 
 
 //        for (int i = 1; i < ; i++) {
@@ -26,6 +26,7 @@ public class BlackDaoTest extends AndroidTestCase{
 //        datas = bd.getAllDatas();
 //
 //        System.out.println(datas+"---------------------------");
+
 
     }
 

@@ -3,7 +3,6 @@ package com.soleil.mobileguard.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -17,7 +16,7 @@ public abstract class BaseSetupActivity extends Activity {
     private GestureDetector gestureDetector;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initView();
         initGesture();

@@ -9,7 +9,6 @@ import android.content.IntentFilter;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.support.annotation.Nullable;
 import android.telephony.SmsMessage;
 
 import com.soleil.mobileguard.R;
@@ -20,7 +19,7 @@ public class LostFindService extends Service {
     private SmsReceiver receiver;
     private boolean isPlay = false;
 
-    @Nullable
+
     @Override
     public IBinder onBind(Intent intent) {
         return null;

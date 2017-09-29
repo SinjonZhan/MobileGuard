@@ -10,7 +10,6 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.RemoteException;
-import android.support.annotation.Nullable;
 import android.telephony.PhoneStateListener;
 import android.telephony.SmsMessage;
 import android.telephony.TelephonyManager;
@@ -34,7 +33,7 @@ public class TelSmsBlackService extends Service {
     private PhoneStateListener listener;
     private TelephonyManager tm;
 
-    @Nullable
+
     @Override
     public IBinder onBind(Intent intent) {
         return null;

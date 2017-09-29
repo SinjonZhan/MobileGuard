@@ -10,4 +10,9 @@ public interface MyConstants {
     String LOSTFIND = "lostfind";
     String TITLE = "title";
     String AUTOUPDATE = "autoupdate";
+    String TOASTX = "toastx";
+    String TOASTY = "toasty";
+
+    String STYLEINDEX = "styleindex";
+
 }

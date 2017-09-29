@@ -1,10 +1,9 @@
 package com.soleil.mobileguard.activities;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
@@ -29,16 +28,17 @@ public class HomeActivity extends Activity {
 
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initView();
         initData();
         initEvent(); //初始化事件
 
+//        System.out.println("*********"+ PhoneLocationEngine.mobileQuery("15687592222", getApplicationContext()));
         //做测试
-        System.out.println("------------------------------");
+
         ReadContactsEngine.readContacts(getApplicationContext());
-        System.out.println("------------------------------");
+
     }
 
     private void initEvent() {
@@ -62,6 +62,21 @@ public class HomeActivity extends Activity {
                         startActivity(intent);
                         break;
                     }
+                    case 2:
+                        //软件管家
+                    {
+                        Intent intent = new Intent(HomeActivity.this, AppManagerActivity.class);
+                        startActivity(intent);
+                        break;
+                    }
+
+                    case 7: {
+                        Intent intent = new Intent(HomeActivity.this, AToolActivity.class);
+                        startActivity(intent);
+
+                        break;
+                    }
+
                     case 8:
                         //设置中心
                     {
@@ -70,6 +85,8 @@ public class HomeActivity extends Activity {
                         startActivity(intent);
                         break;
                     }
+
+
                     default:
                         break;
                 }
