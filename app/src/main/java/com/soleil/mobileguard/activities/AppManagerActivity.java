@@ -1,7 +1,10 @@
 package com.soleil.mobileguard.activities;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -26,14 +29,19 @@ import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mob.MobSDK;
 import com.soleil.mobileguard.R;
 import com.soleil.mobileguard.domain.AppBean;
 import com.soleil.mobileguard.engine.AppManagerEngine;
+import com.stericson.RootTools.RootTools;
+import com.stericson.RootTools.RootToolsException;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeoutException;
 
 import cn.sharesdk.onekeyshare.OnekeyShare;
 
@@ -91,21 +99,40 @@ public class AppManagerActivity extends Activity {
     private LinearLayout ll_setting;
     private AppBean bean;
     private PackageManager pm;
+    private BroadcastReceiver receiver;
 
     @Override
-    protected void onCreate( Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initView();
         initData();
         initEvent();
         initPopupWindow();//初始化弹出窗体
 
+        //一键分享的初始化
         MobSDK.init(getApplicationContext(), "2157e82d10cb4", "49d86a30787f5684be2fba224713521b");
 
+        initRemoveApkReceiver();//注册删除apk的广播接收者
+    }
+
+    private void initRemoveApkReceiver() {
+        //删除apk的广播（包括系统apk）
+        receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                initData();
+            }
+        };
+        //注册删除apk的广播
+        IntentFilter filter = new IntentFilter(Intent.ACTION_PACKAGE_REMOVED);
+        //注意配置数据模式
+        filter.addDataScheme("package");
+
+        registerReceiver(receiver, filter);
     }
 
     /**
-     *显示一键分享
+     * 显示一键分享
      */
     private void showShare() {
 
@@ -134,6 +161,13 @@ public class AppManagerActivity extends Activity {
 
 // 启动分享GUI
         oks.show(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        //取消删除apk广播注册
+        unregisterReceiver(receiver);
+        super.onDestroy();
     }
 
     /**
@@ -227,6 +261,56 @@ public class AppManagerActivity extends Activity {
      */
     private void removeApk() {
 
+
+        if (!bean.isSystem()) {
+            //卸载用户apk
+        /*
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.DELETE" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="package" />
+            </intent-filter>
+           */
+            Intent intent = new Intent("android.intent.action.DELETE");
+            intent.addCategory("android.intent.category.DEFAULT");
+            intent.setData(Uri.parse("package:" + bean.getPackageName()));
+            startActivity(intent);
+            //刷新数据  监听删除的广播
+
+        } else {
+            //卸载系统apk，默认删除不掉 赋予root权限
+
+            //命令卸载代码中
+            try {
+                //是否Root刷机
+                if (!RootTools.isRootAvailable()) {
+                    Toast.makeText(getApplicationContext(), "请先Root刷机\n才能删除系统apk", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                //是否Root权限授权给当前apk
+                if (!RootTools.isAccessGiven()) {
+                    Toast.makeText(getApplicationContext(), "请先Root刷机\n才能删除系统apk", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                RootTools.sendShell("mount -o remount rw /system", 8000);//设置命令超时时间
+                System.out.println("------------------------------");
+                System.out.println(bean.getApkPath());
+                System.out.println("------------------------------");
+                RootTools.sendShell("rm -r " + bean.getApkPath(), 8000);
+                RootTools.sendShell("mount -o remount r /system", 8000);//权限改回
+            } catch (TimeoutException e) {
+                e.printStackTrace();
+            } catch (RootToolsException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+
     }
 
     /**
@@ -303,6 +387,8 @@ public class AppManagerActivity extends Activity {
 
                 handler.obtainMessage(LOADING).sendToTarget();
                 SystemClock.sleep(1000);
+                sysApks.clear();
+                userApks.clear();
 
                 for (AppBean bean : allApk) {
                     if (bean.isSystem()) {
@@ -317,6 +403,7 @@ public class AppManagerActivity extends Activity {
 
 
     }
+
 
     private void initView() {
         setContentView(R.layout.activity_app_manager);
@@ -336,11 +423,13 @@ public class AppManagerActivity extends Activity {
 
     }
 
+
+
     private class apkAdapter extends BaseAdapter {
 
         @Override
         public int getCount() {
-            return allApk.size();
+            return allApk.size()+2;
         }
 
         @Override
@@ -385,7 +474,7 @@ public class AppManagerActivity extends Activity {
                     holder = new ViewHolder();
 
                     holder.drawable = (ImageView) convertView.findViewById(R.id.iv_drawable);
-                    holder.tv_name = (TextView) convertView.findViewById(R.id.tv_packagename);
+                    holder.tv_name = (TextView) convertView.findViewById(R.id.tv_name);
                     holder.tv_isSd = (TextView) convertView.findViewById(R.id.tv_issd);
                     holder.tv_volume = (TextView) convertView.findViewById(R.id.tv_volume);
                     convertView.setTag(holder);

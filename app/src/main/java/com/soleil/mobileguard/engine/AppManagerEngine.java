@@ -36,9 +36,7 @@ public class AppManagerEngine {
 
     /**
      * @param context
-     *
-     * @return
-     *      所有安装的apk信息
+     * @return 所有安装的apk信息
      */
     public static List<AppBean> getAllApk(Context context) {
         //获得所有的apk的数据
@@ -74,6 +72,9 @@ public class AppManagerEngine {
                 //ROm
                 bean.setSd(false);
             }
+
+            //添加apk的路径
+            bean.setApkPath(packageInfo.applicationInfo.sourceDir);
 
 
             apks.add(bean);

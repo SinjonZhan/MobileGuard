@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@drawable/tv_clickstyle"
+
+    android:clickable="true">
 
     <ImageView
         android:id="@+id/iv_drawable"
@@ -27,7 +30,7 @@
         android:textSize="20sp" />
 
     <TextView
-        android:id="@+id/tv_issd"
+        android:id="@+id/tv_mem"
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -36,30 +39,24 @@
 
         android:layout_marginTop="1dp"
         android:layout_toRightOf="@id/iv_drawable"
-        android:text="存储"
+        android:text="200kb"
         android:textColor="#aa000000"
-        android:textSize="20sp" />
+        android:textSize="18sp" />
 
-    <TextView
-        android:id="@+id/tv_volume"
-
+    <CheckBox
+        android:id="@+id/cb_checked"
         android:layout_width="wrap_content"
+
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-
-
         android:layout_centerVertical="true"
+
+
         android:layout_marginRight="5dp"
-        android:text="200kb"
-
-        android:textColor="#aa000000"
-        android:textSize="17sp" />
+        android:clickable="false"
 
 
-    <View
+        />
 
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#44000000" />
 
 </RelativeLayout>

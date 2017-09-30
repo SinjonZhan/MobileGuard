@@ -58,6 +58,7 @@
             android:id="@+id/lv_appmanager_adddatas"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:dividerHeight="2dp"
             android:smoothScrollbar="true"
             android:visibility="gone">
 
@@ -80,11 +81,7 @@
             android:visibility="gone" />
 
     </FrameLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="5dp"
-        android:background="#44000000"
-        android:padding="0dp" />
+
+
 
 </LinearLayout>
