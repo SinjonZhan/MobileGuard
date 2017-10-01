@@ -33,6 +33,7 @@
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
 
     <application
         android:allowBackup="true"
@@ -51,7 +52,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.HomeActivity">
-
+            <intent-filter>
+                <action android:name="com.soliel.homeactivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
         <activity android:name=".activities.LostFindActivity" />
         <activity android:name=".activities.SetUp1Activity" />
@@ -106,12 +110,14 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity android:name=".activities.TaskManagerActivity" />
+        <activity android:name=".activities.TaskManagerSettingActivity" />
 
 
         <service android:name=".service.LostFindService" />
         <service android:name=".service.LocationService" />
         <service android:name=".service.TelSmsBlackService" />
         <service android:name=".service.ComingPhoneService" />
+        <service android:name=".service.ClearTaskService" />
 
 
         <receiver android:name=".receiver.BootReceiver">

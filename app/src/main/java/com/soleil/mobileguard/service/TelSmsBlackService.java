@@ -1,5 +1,8 @@
 package com.soleil.mobileguard.service;
 
+import android.annotation.TargetApi;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -7,6 +10,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.ContentObserver;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.RemoteException;
@@ -15,6 +19,7 @@ import android.telephony.SmsMessage;
 import android.telephony.TelephonyManager;
 
 import com.android.internal.telephony.ITelephony;
+import com.soleil.mobileguard.R;
 import com.soleil.mobileguard.dao.BlackDao;
 import com.soleil.mobileguard.domain.BlackTable;
 
@@ -39,8 +44,21 @@ public class TelSmsBlackService extends Service {
         return null;
     }
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     public void onCreate() {
+
+        Notification notification = new Notification();
+        notification.icon = R.drawable.ic_launcher;
+        Intent intent = new Intent();
+        intent.setAction("com.soliel.homeactivity");
+        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, 0);
+        notification.setLatestEventInfo(getApplicationContext(), "安全卫士", "测试前台服务",pendingIntent );
+
+
+        //提高服务级别
+        startForeground(1, notification);
+
         dao = new BlackDao(getApplicationContext());
         //短信广播注册
         {

@@ -14,5 +14,6 @@ public interface MyConstants {
     String TOASTY = "toasty";
 
     String STYLEINDEX = "styleindex";
+    String SHOWTASK = "showtask";//是否显示系统进程
 
 }

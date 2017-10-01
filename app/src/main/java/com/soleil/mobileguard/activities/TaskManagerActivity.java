@@ -1,6 +1,8 @@
 package com.soleil.mobileguard.activities;
 
 import android.app.Activity;
+import android.app.ActivityManager;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,13 +21,16 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.soleil.mobileguard.R;
 import com.soleil.mobileguard.domain.TaskBean;
 import com.soleil.mobileguard.engine.TaskManagerEngine;
+import com.soleil.mobileguard.utils.MyConstants;
+import com.soleil.mobileguard.utils.SpTools;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 
 /**
@@ -34,8 +39,8 @@ import java.util.List;
 public class TaskManagerActivity extends Activity {
     private static final int LOADING = 1;
     private static final int FINISH = 2;
-    List<TaskBean> userTasks = new ArrayList<>();
-    List<TaskBean> sysTasks = new ArrayList<>();
+    List<TaskBean> userTasks = new CopyOnWriteArrayList<>();
+    List<TaskBean> sysTasks = new CopyOnWriteArrayList<>();
     private TextView tv_runningTask;
     private TextView tv_mem;
     private ListView lv_tasks;
@@ -43,6 +48,7 @@ public class TaskManagerActivity extends Activity {
     private TextView tv_label;
     private List<TaskBean> allRunningTaskInfos;
     private TaskAdapter adapter;
+    private String availMem;
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -59,13 +65,7 @@ public class TaskManagerActivity extends Activity {
                     tv_label.setVisibility(View.VISIBLE);
                     pb_loading.setVisibility(View.GONE);
 
-                    tv_label.setText("用户进程" + "(" + userTasks.size() + ")");
-
-                    tv_runningTask.setText("运行中的进程:" + (allRunningTaskInfos.size()));
-                    tv_mem.setText("可用/总内存:" + (Formatter.formatFileSize(getApplicationContext(), TaskManagerEngine.getAvailableMemSize(getApplicationContext()))
-                            + "/" +
-                            (Formatter.formatFileSize(getApplicationContext(), TaskManagerEngine.getTotalMemSize(getApplicationContext())))));
-                    adapter.notifyDataSetChanged();
+                    setTitleMessage();
 
 
                     break;
@@ -75,6 +75,19 @@ public class TaskManagerActivity extends Activity {
             }
         }
     };
+    private ActivityManager am;
+
+    private void setTitleMessage() {
+        tv_label.setText("用户进程" + "(" + userTasks.size() + ")");
+
+        tv_runningTask.setText("运行中的进程:" + (userTasks.size() + sysTasks.size()));
+        //可用内存
+        availMem = Formatter.formatFileSize(getApplicationContext(), TaskManagerEngine.getAvailableMemSize(getApplicationContext()));
+        tv_mem.setText("可用/总内存:" + availMem
+                + "/" +
+                (Formatter.formatFileSize(getApplicationContext(), TaskManagerEngine.getTotalMemSize(getApplicationContext()))));
+        adapter.notifyDataSetChanged();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +95,12 @@ public class TaskManagerActivity extends Activity {
         initView();
         initData();
         initEvent();
+    }
+
+    @Override
+    protected void onResume() {
+        adapter.notifyDataSetChanged();
+        super.onResume();
     }
 
     private void initEvent() {
@@ -154,7 +173,7 @@ public class TaskManagerActivity extends Activity {
 
         tv_label = (TextView) findViewById(R.id.tv_taskmanager_listview_lable);//；ListView中的标签
 
-
+        am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
     }
 
     /**
@@ -163,6 +182,39 @@ public class TaskManagerActivity extends Activity {
      * @param view
      */
     public void clearTask(View view) {
+        //有些进程是删不掉的，为了增强用户体验，删除除自己以外的
+        int clearMem = 0;//记录清理的内存大小
+        int clearNum = 0;//清理了多少个进程
+        for (TaskBean bean : userTasks) {
+            if (bean.isChecked()) {
+                clearNum++;
+                //清理内存数累积
+                clearMem += bean.getMemSize();
+
+                am.killBackgroundProcesses(bean.getPackName());
+
+                userTasks.remove(bean);
+            }
+
+        }
+        for (TaskBean bean : sysTasks) {
+            if (bean.isChecked()) {
+                clearNum++;
+                //清理内存数累积
+                clearMem += bean.getMemSize();
+
+                am.killBackgroundProcesses(bean.getPackName());
+
+                sysTasks.remove(bean);
+            }
+
+        }
+        Toast.makeText(this, "清理了" + clearNum + "个进程\n释放了内存" + Formatter.formatFileSize(getApplicationContext(), clearMem), Toast.LENGTH_SHORT).show();
+
+
+        availMem += clearMem;
+        setTitleMessage();
+        adapter.notifyDataSetChanged();
 
     }
 
@@ -180,8 +232,10 @@ public class TaskManagerActivity extends Activity {
             if (bean.getPackName().equals(getPackageName())) {
                 bean.setChecked(false);
 
+            } else {
+
+                bean.setChecked(true);
             }
-            bean.setChecked(true);
         }
         adapter.notifyDataSetChanged();
     }
@@ -199,8 +253,10 @@ public class TaskManagerActivity extends Activity {
             if (bean.getPackName().equals(getPackageName())) {
                 bean.setChecked(false);
 
+            } else {
+
+                bean.setChecked(!bean.isChecked());
             }
-            bean.setChecked(!bean.isChecked());
         }
         adapter.notifyDataSetChanged();
     }
@@ -211,15 +267,27 @@ public class TaskManagerActivity extends Activity {
      * @param view
      */
     public void setting(View view) {
-
+        Intent intent = new Intent(this, TaskManagerSettingActivity.class);
+        startActivity(intent);
     }
+
 
 
     private class TaskAdapter extends BaseAdapter {
 
         @Override
         public int getCount() {
-            return userTasks.size() + 1 + sysTasks.size() + 1;
+            if (SpTools.getBoolean(getApplicationContext(), MyConstants.SHOWTASK, true)) {
+                tv_runningTask.setText("运行中的进程:" + (userTasks.size()+sysTasks.size() ));
+
+                return userTasks.size() + 1 + sysTasks.size() + 1;
+
+            } else {
+                tv_runningTask.setText("运行中的进程:" + (userTasks.size() ));
+
+                return userTasks.size() + 1;
+
+            }
         }
 
         @Override
