@@ -118,6 +118,7 @@
         <service android:name=".service.TelSmsBlackService" />
         <service android:name=".service.ComingPhoneService" />
         <service android:name=".service.ClearTaskService" />
+        <service android:name=".service.AppWidgetService" />
 
 
         <receiver android:name=".receiver.BootReceiver">
@@ -136,6 +137,19 @@
                 android:resource="@xml/device_admin_sample" />
             <intent-filter>
                 <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".receiver.ExampleAppWidgetProvider">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/example_appwidget_info" />
+        </receiver>
+        <receiver android:name=".receiver.ClearTaskReceiver" >
+            <intent-filter>
+                <action android:name="com.soleil.widget.cleartask"></action>
             </intent-filter>
         </receiver>
 
