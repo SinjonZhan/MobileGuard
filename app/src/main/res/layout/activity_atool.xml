@@ -67,9 +67,10 @@
         android:id="@+id/bt_addblackuser_bysms"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-
-
         android:drawableLeft="@android:drawable/btn_star_big_on"
+
+
+        android:onClick="lockActivity"
 
         android:text="程序锁"
         android:textColor="#000000" />

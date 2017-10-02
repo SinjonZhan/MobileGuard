@@ -137,4 +137,13 @@ public class AToolActivity extends Activity {
             }
         });
     }
+
+    /**
+     * 跳转到程序锁界面
+     * @param view
+     */
+    public void lockActivity(View view) {
+        Intent intent = new Intent(AToolActivity.this, LockActivity.class);
+        startActivity(intent);
+    }
 }

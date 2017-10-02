@@ -272,18 +272,17 @@ public class TaskManagerActivity extends Activity {
     }
 
 
-
     private class TaskAdapter extends BaseAdapter {
 
         @Override
         public int getCount() {
             if (SpTools.getBoolean(getApplicationContext(), MyConstants.SHOWTASK, true)) {
-                tv_runningTask.setText("运行中的进程:" + (userTasks.size()+sysTasks.size() ));
+                tv_runningTask.setText("运行中的进程:" + (userTasks.size() + sysTasks.size()));
 
                 return userTasks.size() + 1 + sysTasks.size() + 1;
 
             } else {
-                tv_runningTask.setText("运行中的进程:" + (userTasks.size() ));
+                tv_runningTask.setText("运行中的进程:" + (userTasks.size()));
 
                 return userTasks.size() + 1;
 
@@ -380,6 +379,9 @@ public class TaskManagerActivity extends Activity {
                 //判断是否是本身apk 是就隐藏checkbox
                 if (bean.getPackName().equals(getPackageName())) {
                     holder.cb_checked.setVisibility(View.GONE);
+                } else {
+                    holder.cb_checked.setVisibility(View.VISIBLE);
+
                 }
                 return convertView;
             }
