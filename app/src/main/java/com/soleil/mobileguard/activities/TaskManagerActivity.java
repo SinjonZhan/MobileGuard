@@ -77,6 +77,7 @@ public class TaskManagerActivity extends Activity {
     };
     private ActivityManager am;
 
+
     private void setTitleMessage() {
         tv_label.setText("用户进程" + "(" + userTasks.size() + ")");
 
@@ -118,6 +119,7 @@ public class TaskManagerActivity extends Activity {
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
                 //判断显示的位置
                 // 如果为系统进程
                 //改变标签显示的内容
@@ -204,7 +206,7 @@ public class TaskManagerActivity extends Activity {
                 clearMem += bean.getMemSize();
 
                 am.killBackgroundProcesses(bean.getPackName());
-
+                //增强for循环做增删改的时候  不能用普通的容器  会造成并发
                 sysTasks.remove(bean);
             }
 
@@ -317,18 +319,26 @@ public class TaskManagerActivity extends Activity {
                 tv_userLabel.setText("用户进程(" + userTasks.size() + ")");
                 tv_userLabel.setTextColor(Color.WHITE);
                 tv_userLabel.setBackgroundColor(Color.GRAY);
+                System.out.println("---------------a---------------"+convertView);
+
                 return tv_userLabel;
+
             } else if (position == userTasks.size() + 1) {
                 //系统apk的标签
                 TextView tv_sysLabel = new TextView(getApplicationContext());
                 tv_sysLabel.setText("系统进程(" + sysTasks.size() + ")");
                 tv_sysLabel.setTextColor(Color.WHITE);
                 tv_sysLabel.setBackgroundColor(Color.GRAY);
+                System.out.println("---------------b---------------"+convertView);
+
                 return tv_sysLabel;
             } else {
+                System.out.println("---------------c1---------------"+convertView);
+
                 if (convertView == null || !(convertView instanceof RelativeLayout)) {
                     convertView = View.inflate(getApplicationContext(), R.layout.item_task_manager_listview, null);
                     holder = new ViewHolder();
+                    System.out.println("---------------c2---------------"+convertView);
 
                     holder.drawable = (ImageView) convertView.findViewById(R.id.iv_drawable);
                     holder.tv_name = (TextView) convertView.findViewById(R.id.tv_name);
@@ -337,12 +347,13 @@ public class TaskManagerActivity extends Activity {
                     convertView.setTag(holder);
 
                 } else {
+                    System.out.println("---------------d---------------"+convertView);
+
                     holder = (ViewHolder) convertView.getTag();
                 }
                 //不能是成员变量
                 // 因为ListView中position始终指向界面显示的最后一个数据
                 final TaskBean bean = getItem(position);
-
 
                 holder.drawable.setImageDrawable(bean.getIcon());
                 holder.tv_name.setText(bean.getName());
@@ -355,6 +366,10 @@ public class TaskManagerActivity extends Activity {
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
                         bean.setChecked(isChecked);
+
+
+
+
 
 
                     }

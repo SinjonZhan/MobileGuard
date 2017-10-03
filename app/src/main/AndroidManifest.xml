@@ -120,6 +120,7 @@
         <service android:name=".service.ComingPhoneService" />
         <service android:name=".service.ClearTaskService" />
         <service android:name=".service.AppWidgetService" />
+        <service android:name=".service.WatchDogService" />
 
 
         <receiver android:name=".receiver.BootReceiver">

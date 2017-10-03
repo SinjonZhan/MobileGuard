@@ -1,20 +1,58 @@
 package com.soleil.mobileguard.fragment;
 
-import android.os.Bundle;
-import android.view.Gravity;
-import android.view.LayoutInflater;
+import android.os.SystemClock;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
+import android.widget.ImageView;
 
-public class UnlockFragment extends android.support.v4.app.Fragment {
+import com.soleil.mobileguard.R;
+
+public class UnlockFragment extends BaseUnlockOrLockFragment {
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        TextView tv = new TextView(getActivity());
-        tv.setText("未加锁");
-        tv.setGravity(Gravity.CENTER);
+    public boolean isMyDatas(String packName) {
+        return !allLockedPacks.contains(packName);
 
-        return tv;
+
+    }
+
+    @Override
+    protected void setLockedNumberTextView() {
+        tv_unlocked_lab.setText("未加锁软件" + "(" + (unlockedUserDatas.size() + unlockedSysDatas.size()) + ")");
+    }
+
+    /**
+     * @param iv_lock     未加锁的按钮
+     * @param convertView listview的item
+     * @param packName    未加锁包名
+     */
+    @Override
+    protected void setImageViewEventAndBg(ImageView iv_lock, final View convertView, final String packName) {
+        //初始化图片选择器
+        iv_lock.setImageResource(R.drawable.iv_lock_selector);
+
+        iv_lock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                        Log.i("Lock", "lock");
+                //添加数据
+                dao.add(packName);
+
+                //移除数据的动画
+                TranslateAnimation ta = new TranslateAnimation(Animation.RELATIVE_TO_SELF,0, Animation.RELATIVE_TO_SELF,1f, Animation.RELATIVE_TO_SELF,0, Animation.RELATIVE_TO_SELF,0);
+                ta.setDuration(300);
+                convertView.startAnimation(ta);
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        SystemClock.sleep(400);
+                        initData();
+
+                    }
+                }).start();
+                //更新数据
+            }
+        });
     }
 }

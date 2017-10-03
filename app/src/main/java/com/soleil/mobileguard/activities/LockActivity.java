@@ -1,6 +1,8 @@
 package com.soleil.mobileguard.activities;
 
+import android.database.ContentObserver;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -9,8 +11,12 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.soleil.mobileguard.R;
+import com.soleil.mobileguard.dao.LockDao;
+import com.soleil.mobileguard.domain.LockedTable;
 import com.soleil.mobileguard.fragment.LockFragment;
 import com.soleil.mobileguard.fragment.UnlockFragment;
+
+import java.util.List;
 
 
 /**
@@ -35,6 +41,27 @@ public class LockActivity extends FragmentActivity {
     }
 
     private void initEvent() {
+
+        //注册内容观察者
+
+        ContentObserver observer = new ContentObserver(new Handler()) {
+            @Override
+            public void onChange(boolean selfChange) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        //数据dao层存取
+                        LockDao dao = new LockDao(getApplicationContext());
+                        List<String> allLockedDatas = dao.getAllLockedDatas();
+
+                        lockFragment.setAllLockedPacks(allLockedDatas);
+                        unlockFragment.setAllLockedPacks(allLockedDatas);
+                    }
+                }).start();
+            }
+        };
+        getContentResolver().registerContentObserver(LockedTable.uri,true,  observer);
+
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,6 +116,17 @@ public class LockActivity extends FragmentActivity {
     }
 
     private void initData() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                //数据dao层存取
+                LockDao dao = new LockDao(getApplicationContext());
+                List<String> allLockedDatas = dao.getAllLockedDatas();
+
+                lockFragment.setAllLockedPacks(allLockedDatas);
+                unlockFragment.setAllLockedPacks(allLockedDatas);
+            }
+        }).start();
         //fragmemnt的管理器
         fragmentManager = getSupportFragmentManager();
 
@@ -115,6 +153,8 @@ public class LockActivity extends FragmentActivity {
         unlockFragment = new UnlockFragment();
         //加锁的gragment
         lockFragment = new LockFragment();
+
+
     }
 
 

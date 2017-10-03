@@ -30,6 +30,15 @@
     </com.soleil.mobileguard.view.SettingCenterView>
 
     <com.soleil.mobileguard.view.SettingCenterView
+        android:id="@+id/scv_setting_center_watchdogservice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        sinjon:content="看门狗服务设置已经关闭-看门狗服务设置已经打开"
+        sinjon:title="看门狗服务设置">
+
+    </com.soleil.mobileguard.view.SettingCenterView>
+
+    <com.soleil.mobileguard.view.SettingCenterView
         android:id="@+id/scv_setting_center_phonelocationservice"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
