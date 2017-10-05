@@ -46,6 +46,15 @@ public abstract class BaseFriendsCallSmsActivity extends Activity {
                         pd = null;
 
                     }
+
+                    if (datas.size() == 0) {
+                        Intent intent = new Intent();
+                        intent.putExtra(MyConstants.SAFENUMBER, "");
+                        setResult(1, intent);
+
+                        finish();//关闭自己
+                    }
+
                     adapter.notifyDataSetChanged();
                     break;
                 default:

@@ -112,6 +112,7 @@
         <activity android:name=".activities.TaskManagerActivity" />
         <activity android:name=".activities.TaskManagerSettingActivity" />
         <activity android:name=".activities.LockActivity" />
+        <activity android:name=".activities.WatchDogEnterPassActivity"  android:launchMode="singleInstance" />
 
 
         <service android:name=".service.LostFindService" />

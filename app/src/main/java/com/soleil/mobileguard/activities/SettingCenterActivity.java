@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.soleil.mobileguard.R;
 import com.soleil.mobileguard.service.ComingPhoneService;
 import com.soleil.mobileguard.service.TelSmsBlackService;
+import com.soleil.mobileguard.service.WatchDogService;
 import com.soleil.mobileguard.utils.MyConstants;
 import com.soleil.mobileguard.utils.ServiceUtils;
 import com.soleil.mobileguard.utils.SpTools;
@@ -27,6 +28,7 @@ public class SettingCenterActivity extends Activity {
     private TextView tv_locationstyle_content;
     private RelativeLayout rl_locationstyle_select;
     private String[] styleNames = new String[]{"苹果绿", "卫士蓝", "金属灰", "活力橙", "半透明"};
+    private SettingCenterView scv_watchDogService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,15 +39,36 @@ public class SettingCenterActivity extends Activity {
     }
 
     private void initData() {
-        tv_locationstyle_content.setText(styleNames[Integer.parseInt(SpTools.getString(getApplicationContext(), MyConstants.STYLEINDEX, "0"))]);
-        scv_setting_center_update.setChecked(SpTools.getBoolean(getApplicationContext(), MyConstants.AUTOUPDATE, false));
+        //判断看门狗服务
+        scv_watchDogService.setChecked(ServiceUtils.isServiceRunning(getApplicationContext(), "com.soleil.mobileguard.service.WatchDogService"));
 
+        tv_locationstyle_content.setText(styleNames[Integer.parseInt(SpTools.getString(getApplicationContext(), MyConstants.STYLEINDEX, "0"))]);
+        //更新
+        scv_setting_center_update.setChecked(SpTools.getBoolean(getApplicationContext(), MyConstants.AUTOUPDATE, false));
+        //黑名单
         scv_setting_center_intercept_black.setChecked(ServiceUtils.isServiceRunning(getApplicationContext(), "com.soleil.mobileguard.service.TelSmsBlackService"));
 
         scv_setting_center_phoneLocationService.setChecked(ServiceUtils.isServiceRunning(getApplicationContext(), "com.soleil.mobileguard.service.ComingPhoneService"));
     }
 
     private void initEvent() {
+
+        scv_watchDogService.setItemClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (ServiceUtils.isServiceRunning(getApplicationContext(), "com.soleil.mobileguard.service.WatchDogService")) {
+
+                    Intent service = new Intent(SettingCenterActivity.this, WatchDogService.class);
+                    stopService(service);
+                    scv_watchDogService.setChecked(false);
+                } else {
+                    Intent service = new Intent(SettingCenterActivity.this, WatchDogService.class);
+                    startService(service);
+                    scv_watchDogService.setChecked(true);
+                }
+            }
+
+        });
 
         rl_locationstyle_select.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,7 +153,7 @@ public class SettingCenterActivity extends Activity {
         //选择归属地的按钮
         rl_locationstyle_select = (RelativeLayout) findViewById(R.id.rl_setting_center_locationstyle_select);
 
-
+        scv_watchDogService = (SettingCenterView) findViewById(R.id.scv_setting_center_watchdogservice);
     }
 
 }

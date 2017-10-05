@@ -47,6 +47,9 @@ public class SmsEngine {
 
                 System.out.println("------------------------------" + Environment.getExternalStorageDirectory());
                 //2,写到文件中
+                if (cursor.getCount() == 0) {
+                    return;
+                }
                 File file = new File(Environment.getExternalStorageDirectory(), "mySms.json");
 
                 try {

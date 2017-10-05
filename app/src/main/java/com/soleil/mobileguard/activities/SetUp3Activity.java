@@ -31,19 +31,19 @@ public class SetUp3Activity extends BaseSetupActivity {
 
     public void initView() {
         setContentView(R.layout.activity_setup3);
-        et_safenumber =  (TextView) findViewById(R.id.et_setup3_safenumber);
+        et_safenumber = (TextView) findViewById(R.id.et_setup3_safenumber);
     }
 
 
     @Override
-    public void next(View v){
+    public void next(View v) {
         safeNumber = et_safenumber.getText().toString().trim();
-        if(TextUtils.isEmpty(safeNumber)){
+        if (TextUtils.isEmpty(safeNumber)) {
             Toast.makeText(getApplicationContext(), "安全号码不能为空", Toast.LENGTH_SHORT).show();
-            return ;
-        }else {
+            return;
+        } else {
             safeNumber = EncryptTools.encrypt(safeNumber, MyConstants.MUSIC);
-        SpTools.putString(getApplicationContext(), MyConstants.SAFENUMBER, safeNumber);
+            SpTools.putString(getApplicationContext(), MyConstants.SAFENUMBER, safeNumber);
         }
 
 
@@ -52,26 +52,28 @@ public class SetUp3Activity extends BaseSetupActivity {
 
     @Override
     public void initData() {
-        safeNumber = SpTools.getString(getApplicationContext(),MyConstants.SAFENUMBER,"");
+        safeNumber = SpTools.getString(getApplicationContext(), MyConstants.SAFENUMBER, "");
         safeNumber = EncryptTools.decrypt(safeNumber, MyConstants.MUSIC);
         et_safenumber.setText(safeNumber);
     }
 
     /**
-     * @param view
-     * 从手机联系人里获取安全号码
+     * @param view 从手机联系人里获取安全号码
      */
     public void selectSafeNumber(View view) {
         Intent intent = new Intent(this, FriendsActivity.class);
-        startActivityForResult(intent,1);
+        startActivityForResult(intent, 1);
 
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (data != null) {
-        String phone = data.getStringExtra(MyConstants.SAFENUMBER);
-        et_safenumber.setText(phone);
+            String phone = data.getStringExtra(MyConstants.SAFENUMBER);
+            if (TextUtils.isEmpty(phone)) {
+                Toast.makeText(getApplicationContext(), "没有选择联系人", Toast.LENGTH_SHORT).show();
+            }
+            et_safenumber.setText(phone);
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
