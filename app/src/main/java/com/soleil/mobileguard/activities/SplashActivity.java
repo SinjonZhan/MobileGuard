@@ -118,8 +118,11 @@ public class SplashActivity extends Activity {
         initAnimation();
         //检查版本更新
 
-        //拷贝数据库
+        //拷贝来电归属地数据库
         copyDB("address.db");
+
+        //拷贝病毒数据库
+        copyDB("antivirus.db");
 
     }
 

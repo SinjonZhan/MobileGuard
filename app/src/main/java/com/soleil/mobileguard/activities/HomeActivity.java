@@ -76,6 +76,13 @@ public class HomeActivity extends Activity {
                         startActivity(intent);
                         break;
                     }
+                    case 4:
+                        //流量统计
+                    {
+                        Intent intent = new Intent(HomeActivity.this, FlowActivity.class);
+                        startActivity(intent);
+                        break;
+                    }
 
                     case 7: {
                         Intent intent = new Intent(HomeActivity.this, AToolActivity.class);
