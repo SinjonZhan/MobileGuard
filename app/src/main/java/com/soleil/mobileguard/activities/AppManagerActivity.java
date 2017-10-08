@@ -253,6 +253,10 @@ public class AppManagerActivity extends Activity {
         String packageName = bean.getPackageName();
         Intent launchIntentForPackage = pm.getLaunchIntentForPackage(packageName);
         Intent intent = new Intent(launchIntentForPackage);
+        //判断app是否有主界面
+        if (intent == null) {
+            Toast.makeText(getApplicationContext(), "该app没有启动界面", Toast.LENGTH_SHORT).show();
+        }
         startActivity(intent);
     }
 
