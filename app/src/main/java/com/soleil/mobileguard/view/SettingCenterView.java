@@ -30,8 +30,8 @@ public class SettingCenterView extends LinearLayout {
         super(context, attrs);
         initView();
         initEvent();
-        String title = attrs.getAttributeValue("http://schemas.android.com/apk/res/com.soleil.mobileguard", "title");
-        String content = attrs.getAttributeValue("http://schemas.android.com/apk/res/com.soleil.mobileguard", "content");
+        String title = attrs.getAttributeValue("http://schemas.android.com/apk/res-auto", "title");
+        String content = attrs.getAttributeValue("http://schemas.android.com/apk/res-auto", "content");
 
         tv_title.setText(title);
         split = content.split("-");
