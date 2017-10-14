@@ -1,6 +1,7 @@
 package com.soleil.mobileguard.activities;
 
 import android.app.Activity;
+import android.content.pm.IPackageDataObserver;
 import android.content.pm.IPackageStatsObserver;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -18,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.soleil.mobileguard.R;
 import com.soleil.mobileguard.domain.AppBean;
@@ -33,6 +35,7 @@ public class CacheActivity extends Activity {
 
     private static final int SCANNING = 1;
     private static final int FINISH = 2;
+    private static final int CLEARALL = 3;
     private ProgressBar pb_loading;
     private LinearLayout ll_mess;
     private List<CacheInfo> cacheDatas = new ArrayList<>();
@@ -53,12 +56,28 @@ public class CacheActivity extends Activity {
 
                     tv_scan_name.setText("正在扫描:" + msg.obj);
 
+
+                    break;
+
+                case CLEARALL://监听清理缓存完成的回调结果
+                    pb_loading.setVisibility(View.GONE);
+                    ll_mess.setVisibility(View.GONE);
+                    tv_scan_name.setVisibility(View.GONE);
+
+                    tv_nodata.setVisibility(View.VISIBLE);
+
+                    tv_nodata.setText(msg.obj.toString());
+                    cacheDatas.clear();//清空容器
+
+
                     break;
 
                 case FINISH://扫描完成
                     pb_loading.setVisibility(View.GONE);
                     tv_scan_name.setVisibility(View.GONE);
 
+
+                    ll_mess.removeAllViews();//移除所有缓存信息
                     //判断是否有缓存
                     if (cacheDatas.size() == 0) {
                         //没有缓存
@@ -156,9 +175,29 @@ public class CacheActivity extends Activity {
     /**
      * 清理所有缓存
      *
-     * @param view
+     * @param view deleteApplicationCacheFiles
      */
     public void clearAll(View view) {
+        Class clazz = pm.getClass();// 获取PackageManager的类类型
+        try {
+            Method method = clazz.getDeclaredMethod("freeStorageAndNotify",
+                    long.class, IPackageDataObserver.class);
+            // 把包名传递给回调对象
+            //getcacheInfo.packName = packageName;
+            method.invoke(pm, Long.MAX_VALUE, new ClearCache());// 结果回调在IPackageStatsObserver的对象中
+        } catch (NoSuchMethodException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IllegalArgumentException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
     }
 
@@ -166,10 +205,10 @@ public class CacheActivity extends Activity {
         Class clazz = pm.getClass();// 获取PackageManager的类类型
         try {
             Method method = clazz.getDeclaredMethod("getPackageSizeInfo",
-                    String.class,int.class,  IPackageStatsObserver.class);
+                    String.class, int.class, IPackageStatsObserver.class);
             // 把包名传递给回调对象
             //getcacheInfo.packName = packageName;
-            method.invoke(pm, packageName, Process.myUid()/100000, new GetCacheInfo(packageName));// 结果回调在IPackageStatsObserver的对象中
+            method.invoke(pm, packageName, Process.myUid() / 100000, new GetCacheInfo(packageName));// 结果回调在IPackageStatsObserver的对象中
         } catch (NoSuchMethodException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -185,10 +224,38 @@ public class CacheActivity extends Activity {
         }
     }
 
+    /**
+     * 清理缓存
+     */
+    private class ClearCache extends IPackageDataObserver.Stub {
+        @Override
+        public void onRemoveCompleted(final String packageName, boolean succeeded) throws RemoteException {
+            //子线程回调结果显示
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Message msg = handler.obtainMessage(CLEARALL);
+                    long totalSize = 0;//累计缓存大小
+                    for (CacheInfo info : cacheDatas) {
+                        //遍历缓存数据容器
+                        totalSize += info.cacheSizeLong;
+                    }
+                    msg.obj = "垃圾文件清理成功! \n本次为您节省了" + Formatter.formatFileSize(getApplicationContext(), totalSize) + "空间";
+                    handler.sendMessage(msg);
+
+
+                    Toast.makeText(getApplicationContext(), "清理完毕" + packageName, Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
+
     private class GetCacheInfo extends IPackageStatsObserver.Stub {
 
+
         String packName;
-        public GetCacheInfo(String packName){
+
+        public GetCacheInfo(String packName) {
             this.packName = packName;
         }
 
@@ -203,26 +270,31 @@ public class CacheActivity extends Activity {
         @Override
         public void onGetStatsCompleted(PackageStats pStats, boolean succeeded) throws RemoteException {
 
-            if (pStats.cacheSize > 0) {
-                System.out.println("有缓存信息：" + packName);
-                //有缓存
-                //记录app和缓存信息（放到容器中)
-                //图标 名字 缓存大小
-                CacheInfo cacheInfo = new CacheInfo();
-                try {
-                    PackageInfo packageInfo = pm.getPackageInfo(packName, 0);
-                    //图标
-                    cacheInfo.icon = packageInfo.applicationInfo.loadIcon(pm);
-                    //名字
-                    cacheInfo.name = packageInfo.applicationInfo.loadLabel(pm) + "";
-                    //缓存大小
-                    cacheInfo.cacheSize = Formatter.formatFileSize(getApplicationContext(), pStats.cacheSize);
-                } catch (PackageManager.NameNotFoundException e) {
-                    e.printStackTrace();
+            synchronized (packName) {
+
+                if (pStats.cacheSize > 0) {
+                    System.out.println("有缓存信息：" + packName);
+                    //有缓存
+                    //记录app和缓存信息（放到容器中)
+                    //图标 名字 缓存大小
+                    CacheInfo cacheInfo = new CacheInfo();
+                    try {
+                        PackageInfo packageInfo = pm.getPackageInfo(packName, 0);
+                        //图标
+                        cacheInfo.icon = packageInfo.applicationInfo.loadIcon(pm);
+                        //名字
+                        cacheInfo.name = packageInfo.applicationInfo.loadLabel(pm) + "";
+                        //缓存大小及显示的数据
+                        cacheInfo.cacheSizeLong = pStats.cacheSize;
+                        cacheInfo.cacheSize = Formatter.formatFileSize(getApplicationContext(), pStats.cacheSize);
+                    } catch (PackageManager.NameNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    //添加一条缓存信息
+                    cacheDatas.add(cacheInfo);
                 }
-                //添加一条缓存信息
-                cacheDatas.add(cacheInfo);
             }
+
         }
     }
 
@@ -232,6 +304,7 @@ public class CacheActivity extends Activity {
     private class CacheInfo {
         Drawable icon;
         String name;
+        long cacheSizeLong;//缓存大小
         String cacheSize;//格式化后的字符串
     }
 

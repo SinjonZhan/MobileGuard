@@ -19,6 +19,15 @@ android {
             jniLibs.srcDirs = ['libs']
         }
     }
+
+    buildTypes {
+        release {
+            //我们在buildTypes[release]配置中执行混淆
+            minifyEnabled true //开启混淆
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-project.txt'
+//指定proguard的混淆配置文件
+        }
+    }
 }
 
 dependencies {

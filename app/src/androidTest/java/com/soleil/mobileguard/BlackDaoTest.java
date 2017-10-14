@@ -9,8 +9,11 @@ public class BlackDaoTest extends AndroidTestCase{
     @Test
     public void testAdd() throws Exception {
 
-        System.out.println("------------------------------"+  getContext().getFilesDir());
-        System.out.println("------------------------------"+  getContext().getCacheDir());
+//        System.out.println("------------------------------"+  getContext().getFilesDir());
+//        System.out.println("------------------------------"+  getContext().getCacheDir());
+  System.out.println("------------------------------"+  getContext().getResources().getDisplayMetrics().density);
+  System.out.println("------------------------------"+  getContext().getResources().getDisplayMetrics().densityDpi);
+
 
 
 

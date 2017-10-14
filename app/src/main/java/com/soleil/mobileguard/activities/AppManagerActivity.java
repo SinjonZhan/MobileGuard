@@ -349,7 +349,9 @@ public class AppManagerActivity extends Activity {
                 int[] location = new int[2];
                 view.getLocationInWindow(location);
 
-                showPopupWindow(view, location[0] + 40, location[1]);
+                int width = allApk.get(1).getIcon().getIntrinsicWidth();
+
+                showPopupWindow(view, location[0]+width+10 , location[1]);
             }
         });
 
